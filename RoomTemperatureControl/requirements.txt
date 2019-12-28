@@ -1,0 +1,5 @@
+w1thermsensor==1.1.2
+Flask==1.0.3
+Flask-RESTful==0.3.7
+Flask-SocketIO==4.1.0
+requests==2.22.0

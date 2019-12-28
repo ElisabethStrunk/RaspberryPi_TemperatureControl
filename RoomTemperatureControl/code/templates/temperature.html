@@ -6,7 +6,37 @@
 
 {% block content %}
     <article class="post">
-        <h2>Current Temperature:</h2>
-        <p class="body">{{temperature}}</p>
+        <div class="grid-container">
+            <div>
+                <header>
+                    <div>
+                        <h1>Current Temperature</h1>
+                    </div>
+                </header>
+                <p class="body">{{ temperature }}</p>
+            </div>
+            <div>
+                <header>
+                    <div>
+                        <h1>Target Temperature</h1>
+                    </div>
+                </header>
+                <p class="body">{{ target }}</p>
+            </div>
+            <div>
+                <header>
+                    <div>
+                        <h1>Change Target Temperature</h1>
+                    </div>
+                </header>
+                <form action="{{ url_for('temperatureresource') }}?html=true" method="post" enctype="application/json">
+                    New target temperature: <input type="text" name="target">
+                    <label for="submit-target" class="custom-upload">
+                        Submit
+                    </label>
+                    <input id="submit-target" type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
     </article>
 {% endblock %}

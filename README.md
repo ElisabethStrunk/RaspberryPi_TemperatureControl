@@ -55,6 +55,9 @@ This method is used, if you are running your Raspberry Pi headless or if you are
 <img src="readme_images/LI-In-Bug.png" width=22> https://www.linkedin.com/in/elisabeth-strunk/<br>
 <br>
 
+## License
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+
 ## Acknowledgments
 
 * Huge thanks to [Les Pounder](https://bigl.es/author/les/) who authored an [article](https://bigl.es/ds18b20-temperature-sensor-with-python-raspberry-pi/) on how to use DS18B20 sensors with Rasperry Pi.

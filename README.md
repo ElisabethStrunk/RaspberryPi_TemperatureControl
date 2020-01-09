@@ -58,5 +58,5 @@ This method is used, if you are running your Raspberry Pi headless or if you are
 ## Acknowledgments
 
 * Huge thanks to [Les Pounder](https://bigl.es/author/les/) who authored an [article](https://bigl.es/ds18b20-temperature-sensor-with-python-raspberry-pi/) on how to use DS18B20 sensors with Rasperry Pi.
-* Huge thanks to Scott Campbell from [Circuit Basics](http://www.circuitbasics.com/) who authored an [article](https://bigl.es/ds18b20-temperature-sensor-with-python-raspberry-pi/) on how to use DS18B20 sensors with Rasperry Pi.
+* Huge thanks to Scott Campbell from [Circuit Basics](http://www.circuitbasics.com/) who authored an [article](http://www.circuitbasics.com/raspberry-pi-ds18b20-temperature-sensor-tutorial/) on how to use DS18B20 sensors with Rasperry Pi.
 * Huge thanks to Matt Hawkins from [Raspberry Pi Spy](https://www.raspberrypi-spy.co.uk/) who authored an [article](https://www.raspberrypi-spy.co.uk/2018/02/enable-1-wire-interface-raspberry-pi/) on how to enable 1-Wire on Rasperry Pi.

@@ -2,6 +2,8 @@
 
 ## Getting started
 
+The following instructions will cover the prerequisites to get your copy of the project up and running on your local machine. The following steps assume, that your Raspberry Pi is already set up and ready to go. For a tutorial on a headless setup (without monitor, mouse or keyboard) you can have a look [here](headless_setup.md).
+
 ### Connecting the DS18B20 sensor to the Raspberry Pi
 First, the DS18B20 needs to be connected to the Raspberry Pi.<br>
 <br>

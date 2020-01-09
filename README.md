@@ -26,6 +26,26 @@ _Table 1: Pin connections in our setup._<br>
 <img src="readme_images/connect_DS18B20.jpg" width=450><br>
 _Figure 3: Wiring setup for temperature measurement.<br>(Source: [Les Pounder: DS18B20 Temperature Sensor With Python (Raspberry Pi)](https://bigl.es/ds18b20-temperature-sensor-with-python-raspberry-pi/))_
 
+### Enabling the Raspberry Pi's 1-Wire communication interface
+The DS18B20 sensor uses [1-Wire communication](https://en.wikipedia.org/wiki/1-Wire) to transmit its data. The Raspberry Pi's GPIO4 can be configured as a 1-Wire bus interface so the Raspberry Pi will be able to communicate with the DS18B20. To enable the 1-Wire functionality on the Raspberry Pi, you can choose one of the following methods:
+
+#### Method 1: Via GUI
+This method is used, if your Pi boots to the desktop.
+
+* On your Raspberry Pi start the _Raspberry Pi Configuration Tool_ by clicking _Menu_ -> _Preferences_ -> _Raspberry Pi Configuration_.
+* In the _Interfaces_ tab set _1-Wire_ to _Enabled_ and confirm by clicking _Ok_.
+* When prompted to reboot, select _Yes_ (so that the changes will take effect) and wait until the Raspberry Pi has rebooted.
+
+#### Method 2: Via terminal
+This method is used, if you are running your Raspberry Pi headless or if you are more comfortable using the terminal than the GUI.
+
+* On your Raspberry Pi open a terminal session and start the _Raspberry Pi Configuration Tool_ with
+    ```Bash
+    sudo raspi-config
+    ```
+* Select _5 Interfacing Options_ -> _P7 1-Wire_ -> _Yes_ -> _Ok_.
+* When prompted to reboot, select _Yes_ (so that the changes will take effect) and wait until the Raspberry Pi has rebooted.
+
 ## Author
 
 **Elisabeth Strunk**<br>
@@ -37,3 +57,4 @@ _Figure 3: Wiring setup for temperature measurement.<br>(Source: [Les Pounder: D
 
 * Huge thanks to [Les Pounder](https://bigl.es/author/les/) who authored an [article](https://bigl.es/ds18b20-temperature-sensor-with-python-raspberry-pi/) on how to use DS18B20 sensors with Rasperry Pi.
 * Huge thanks to Scott Campbell from [Circuit Basics](http://www.circuitbasics.com/) who authored an [article](https://bigl.es/ds18b20-temperature-sensor-with-python-raspberry-pi/) on how to use DS18B20 sensors with Rasperry Pi.
+* Huge thanks to Matt Hawkins from [Raspberry Pi Spy](https://www.raspberrypi-spy.co.uk/) who authored an [article](https://www.raspberrypi-spy.co.uk/2018/02/enable-1-wire-interface-raspberry-pi/) on how to enable 1-Wire on Rasperry Pi.

@@ -16,14 +16,14 @@ app.config['SECRET_KEY'] = os.urandom(16)
 db_file = 'data.db' #'/home/pi/temp_ctrl/data.db'
 
 
-class TargetTemperatureDatabase:
+class TemperatureDatabase:
     @classmethod
-    def create_target_temperature_table(cls):
+    def create_temperature_tables(cls):
         connection = sqlite3.connect(db_file)
         cursor = connection.cursor()
-        create_table = "CREATE TABLE IF NOT EXISTS temperature (target REAL)"
+        create_table = "CREATE TABLE IF NOT EXISTS temperature (target REAL, tolerance REAL)"
         cursor.execute(create_table)
-        cursor.execute("INSERT INTO temperature VALUES (23.0)")
+        cursor.execute("INSERT INTO temperature VALUES (23.0, 3.0)")
         connection.commit()
         connection.close()
 
@@ -33,9 +33,9 @@ class TargetTemperatureDatabase:
         cursor = connection.cursor()
         query = "SELECT target from temperature"
         result = cursor.execute(query)
-        status = result.fetchone()
+        target = result.fetchone()
         connection.close()
-        return status[0]
+        return target[0]
 
     @classmethod
     def write_target_temperature(cls, new_target_temperature):
@@ -46,17 +46,36 @@ class TargetTemperatureDatabase:
         connection.commit()
         connection.close()
 
+    @classmethod
+    def read_temperature_tolerance(cls):
+        connection = sqlite3.connect(db_file)
+        cursor = connection.cursor()
+        query = "SELECT tolerance from temperature"
+        result = cursor.execute(query)
+        tolerance = result.fetchone()
+        connection.close()
+        return tolerance[0]
+
+    @classmethod
+    def write_temperature_tolerance(cls, new_temperature_tolerance):
+        connection = sqlite3.connect(db_file)
+        cursor = connection.cursor()
+        query = "UPDATE temperature SET tolerance=?"
+        cursor.execute(query, (new_temperature_tolerance,))
+        connection.commit()
+        connection.close()
 
 # Create data base if it does not already exist
 if not os.path.exists(db_file):
     print('Could not find {}, creating new file'.format(db_file))
-    TargetTemperatureDatabase.create_target_temperature_table()
+    TemperatureDatabase.create_temperature_tables()
 
 
 # Define restful resources
 class TemperatureResource(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('target', type=str)
+    parser.add_argument('tolerance', type=str)
     parser.add_argument('html', type=str, location='args')
 
     def get(self):
@@ -66,31 +85,43 @@ class TemperatureResource(Resource):
                 headers = {'Content-Type': 'text/html'}
                 return make_response(render_template('temperature.html',
                                                      temperature=temperature,
-                                                     target=TargetTemperatureDatabase.read_target_temperature()
+                                                     target=TemperatureDatabase.read_target_temperature(),
+                                                     tolerance=TemperatureDatabase.read_temperature_tolerance()
                                                      ), 200, headers)
             else:
-                return {'status': temperature}, 200
-        except Exception:
-            return {'message': 'An error occurred fetching the temperature. {}'.format(e)}, 500
+                return {'temperature': temperature,
+                        'target': TemperatureDatabase.read_target_temperature(),
+                        'tolerance': TemperatureDatabase.read_temperature_tolerance()}, 200
+        except Exception as e:
+            return {'message': 'An error occurred fetching temperature information. {}'.format(e)}, 500
 
     def post(self):
         try:
-            try:
-                data = TemperatureResource.parser.parse_args()['target']
-            except Exception:
-                return {'message': 'No temperature data received.'}, 400
-            TargetTemperatureDatabase.write_target_temperature(float(data))
+            arguments = TemperatureResource.parser.parse_args()
+            if arguments['target']:
+                target = arguments['target']
+                TemperatureDatabase.write_target_temperature(float(target))
+            if arguments['tolerance']:
+                tolerance = arguments['tolerance']
+                TemperatureDatabase.write_target_temperature(float(tolerance))
 
-            if TemperatureResource.parser.parse_args()['html']:
+            if arguments['html']:
                 headers = {'Content-Type': 'text/html'}
                 return make_response(render_template('temperature.html',
-                                                     temperature=get_temperature(),
                                                      target=TargetTemperatureDatabase.read_target_temperature()
+                                                     target=TemperatureDatabase.read_target_temperature(),
+                                                     tolerance=TemperatureDatabase.read_temperature_tolerance()
                                                      ), 200, headers)
             else:
-                return {'message': 'Target temperature changed to {}'.format(data)}, 200
+                message = ''
+                if arguments['target']:
+                    message = message + 'Target temperature changed to {}'.format(target)
+                if arguments['tolerance']:
+                    message = message + 'Temperature tolerance changed to {}'.format(tolerance)
+                return {'message': message}, 200
         except Exception as e:
-            return {'message': 'An error occurred during changing the target temperature. {}'.format(e)}, 500
+            return {'message': 'An error occurred during changes in the temperature configurations. '
+                               '{}'.format(e)}, 500
 
 # Initialise restful api
 api = Api()

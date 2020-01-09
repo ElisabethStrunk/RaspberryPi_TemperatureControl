@@ -15,6 +15,8 @@
                 </header>
                 <p class="body">{{ temperature }}</p>
             </div>
+        </div>
+        <div class="grid-container">
             <div>
                 <header>
                     <div>
@@ -35,6 +37,30 @@
                         Submit
                     </label>
                     <input id="submit-target" type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+        <div class="grid-container">
+            <div>
+                <header>
+                    <div>
+                        <h1>Temperature Tolerance</h1>
+                    </div>
+                </header>
+                <p class="body">{{ tolerance }}</p>
+            </div>
+            <div>
+                <header>
+                    <div>
+                        <h1>Change Temperature Tolerance</h1>
+                    </div>
+                </header>
+                <form action="{{ url_for('temperatureresource') }}?html=true" method="post" enctype="application/json">
+                    New temperature tolerance: <input type="text" name="tolerance">
+                    <label for="submit-tolerance" class="custom-upload">
+                        Submit
+                    </label>
+                    <input id="submit-tolerance" type="submit" value="Submit">
                 </form>
             </div>
         </div>
